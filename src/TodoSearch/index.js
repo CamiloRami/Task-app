@@ -16,7 +16,7 @@ function TodoSearch() {
   return (
     <input 
       className="TodoSearch"
-      placeholder="Buscar . . ."
+      placeholder="Search . . ."
       value={searchValue}
       onChange={onShearchValueChange}
     />
