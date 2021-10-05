@@ -9,7 +9,7 @@ function TodoCounter() {
   } = React.useContext(TodoContext)
 
   return (
-    <h2 className="TodoCounter">You have completed {completedTodos} out of {totalTodos} tasks</h2>
+    <h2 className="TodoCounter">You have completed {completedTodos} of {totalTodos} tasks</h2>
   );
 }
 
