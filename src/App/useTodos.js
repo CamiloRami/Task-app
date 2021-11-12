@@ -1,9 +1,7 @@
 import React from "react";
 import { useLocalStorage } from "./UseLocalStorage";
 
-const TodoContext = React.createContext()
-
-function TodoProvider(props) {
+function useTodos(props) {
   const {
     item: todos,
     saveItem: saveTodos,
@@ -40,39 +38,35 @@ function TodoProvider(props) {
     saveTodos(newTodos)
   }
   
-    const addTodo = (text) => {
-      const newTodos = [...todos]
-      newTodos.push({
-        completed: false,
-        text: text,
-      })
-      saveTodos(newTodos)
-    }
-    
-    const deleteTodo = (text) => {
-      const todoIndex = todos.findIndex(todo => todo.text === text)
-      const newTodos = [...todos]
-      newTodos.splice(todoIndex, 1)
-      saveTodos(newTodos)
-    }
-    
-    return (
-      <TodoContext.Provider value={{
-        loading,
-        error,
-        totalTodos,
-        completedTodos,
-        searchValue,
-        setSearchValue,
-        searchedTodos,
-        deleteTodo,
-        addTodo,
-        completeTodoSwitch,
-        openModal,
-        setOpenModal,
-      }}>
-          {props.children}
-        </TodoContext.Provider>
-    )
+  const addTodo = (text) => {
+    const newTodos = [...todos]
+    newTodos.push({
+      completed: false,
+      text: text,
+    })
+    saveTodos(newTodos)
+  }
+  
+  const deleteTodo = (text) => {
+    const todoIndex = todos.findIndex(todo => todo.text === text)
+    const newTodos = [...todos]
+    newTodos.splice(todoIndex, 1)
+    saveTodos(newTodos)
+  }
+  
+  return {
+    loading,
+    error,
+    totalTodos,
+    completedTodos,
+    searchValue,
+    setSearchValue,
+    searchedTodos,
+    deleteTodo,
+    addTodo,
+    completeTodoSwitch,
+    openModal,
+    setOpenModal,
+  }
 }
-export { TodoContext, TodoProvider }
+export { useTodos }
