@@ -1,10 +1,11 @@
 import React from "react";
-import { useLocalStorage } from "./UseLocalStorage";
+import { useLocalStorage } from "./useLocalStorage";
 
 function useTodos(props) {
   const {
     item: todos,
     saveItem: saveTodos,
+    sincronizeItem: sincronizeTodos,
     loading,
     error,
   } = useLocalStorage('TODOS_V1', [])
@@ -67,6 +68,7 @@ function useTodos(props) {
     completeTodoSwitch,
     openModal,
     setOpenModal,
+    sincronizeTodos,
   }
 }
 export { useTodos }

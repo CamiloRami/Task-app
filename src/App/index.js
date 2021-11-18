@@ -12,6 +12,7 @@ import { TodosError } from '../TodosError';
 import { TodosLoading } from '../TodosLoading';
 import { EmptyTodos } from '../EmptyTodos';
 import { EmptySearchResults } from '../EmptySearchResults'
+import { ChangeAlertWhitStorageListener } from '../ChangeAlert'
 
 function App() {
   const {
@@ -27,6 +28,7 @@ function App() {
     searchValue,
     setSearchValue,
     addTodo,
+    sincronizeTodos,
   } = useTodos()
 
   return (
@@ -75,6 +77,10 @@ function App() {
           />
         )}
       </TodoList>      
+      
+      <ChangeAlertWhitStorageListener 
+        sincronize={sincronizeTodos}
+      />
 
       {openModal && (
         <Modal>
