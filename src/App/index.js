@@ -35,11 +35,13 @@ function App() {
         <TodoCounter 
           totalTodos={totalTodos}
           completedTodos={completedTodos}
+          loading={loading}
         />
 
         <TodoSearch 
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          loading={loading}
         />
       </TodoHeader>
 

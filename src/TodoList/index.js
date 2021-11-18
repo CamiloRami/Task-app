@@ -13,7 +13,7 @@ function TodoList(props) {
 
       {(!props.searchedTodos.length && !!props.totalTodos) && props.onEmptySearchResults()}
 
-      {props.searchedTodos.map(renderFn)}            {/*todo => props.render(todo)  y props.render  hacen la misma funcion como paramentro, pero mas corto*/}
+      {props.searchedTodos.map(renderFn)}
 
     </section>
   );
