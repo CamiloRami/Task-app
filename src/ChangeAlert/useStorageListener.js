@@ -21,4 +21,4 @@ function useStorageListener( sincronize ) {
   }
 }
 
-export { useStorageListener }
+export { useStorageListener };
