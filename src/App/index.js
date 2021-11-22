@@ -12,7 +12,7 @@ import { TodosError } from '../TodosError';
 import { TodosLoading } from '../TodosLoading';
 import { EmptyTodos } from '../EmptyTodos';
 import { EmptySearchResults } from '../EmptySearchResults'
-import { ChangeAlertWhitStorageListener } from '../ChangeAlert'
+import { ChangeAlert } from '../ChangeAlert'
 
 function App() {
   const {
@@ -78,7 +78,7 @@ function App() {
         )}
       </TodoList>      
       
-      <ChangeAlertWhitStorageListener 
+      <ChangeAlert
         sincronize={sincronizeTodos}
       />
 
