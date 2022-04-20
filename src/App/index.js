@@ -15,21 +15,26 @@ import { EmptySearchResults } from '../EmptySearchResults'
 import { ChangeAlert } from '../ChangeAlert'
 
 function App() {
+  const { states, stateUpdaters } = useTodos()
+
   const {
-    error,
     loading,
-    searchedTodos,
-    completeTodoSwitch,
-    deleteTodo,
-    openModal,
-    setOpenModal,
-    totalTodos, 
+    error,
+    totalTodos,
     completedTodos,
     searchValue,
+    searchedTodos,
+    openModal,
+  } = states
+
+  const {
     setSearchValue,
     addTodo,
+    completeTodoSwitch,
+    deleteTodo,
+    setOpenModal,
     sincronizeTodos,
-  } = useTodos()
+  } = stateUpdaters
 
   return (
     <React.Fragment>

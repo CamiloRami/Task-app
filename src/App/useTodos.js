@@ -12,7 +12,7 @@ function useTodos(props) {
   const [searchValue, setSearchValue] = React.useState('')
   const [openModal, setOpenModal] = React.useState(false)
   
-  const completedTodos = todos.filter(todo => !!todo.completed).length //El doble signo de interrogacion es lo mismo que (todo.completed === true)
+  const completedTodos = todos.filter(todo => !!todo.completed).length 
   const totalTodos = todos.length
   
   let searchedTodos = []
@@ -55,20 +55,25 @@ function useTodos(props) {
     saveTodos(newTodos)
   }
   
-  return {
+  const states = {
     loading,
     error,
     totalTodos,
     completedTodos,
     searchValue,
-    setSearchValue,
     searchedTodos,
-    deleteTodo,
+    openModal,
+  }
+
+  const stateUpdaters = {
+    setSearchValue,
     addTodo,
     completeTodoSwitch,
-    openModal,
+    deleteTodo,
     setOpenModal,
     sincronizeTodos,
   }
+
+  return { states, stateUpdaters }
 }
 export { useTodos }
