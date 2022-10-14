@@ -1,18 +1,23 @@
 import React from "react";
 import { useLocalStorage } from "./useLocalStorage";
+import { useAuth } from "./useAuth";
+import { updateTask, deleteTask, createTask } from './services/taskApi'
 
-function useTodos(props) {
+function useTodos() {
+  const { user, isLogged, login, logout, signUp, token } = useAuth()
   const {
     item: todos,
     saveItem: saveTodos,
     sincronizeItem: sincronizeTodos,
     loading,
     error,
-  } = useLocalStorage('TODOS_V1', [])
+  } = useLocalStorage('TODOS_V1', [], {user, isLogged, token})
+
   const [searchValue, setSearchValue] = React.useState('')
   const [openModal, setOpenModal] = React.useState(false)
+  const [modalContent, setModalContent] = React.useState(false)
   
-  const completedTodos = todos.filter(todo => !!todo.completed).length 
+  const completedTodos = todos.filter(todo => !!todo.isCompleted).length 
   const totalTodos = todos.length
   
   let searchedTodos = []
@@ -22,39 +27,50 @@ function useTodos(props) {
     
   } else {
     searchedTodos = todos.filter( todo => {
-      const todoText = todo.text.toLowerCase() //De esta manera no separamos la busquedas con mayusculas y minusculas
+      const todoText = todo.description.toLowerCase()
       const searchText = searchValue.toLowerCase()
       return todoText.includes(searchText)
     })
   }
   
-  const completeTodoSwitch = (text) => {
-    const todoIndex = todos.findIndex(todo => todo.text === text)
-    const newTodos = [...todos]
-    if(!newTodos[todoIndex].completed) {
-      newTodos[todoIndex].completed = true
-    } else {
-      newTodos[todoIndex].completed = false
-    }
-    saveTodos(newTodos)
+  const completeTodoSwitch = async (id) => {
+      const todoIndex = todos.findIndex(todo => todo._id === id)
+      const newTodos = [...todos]
+      if(!newTodos[todoIndex].isCompleted) {
+        newTodos[todoIndex].isCompleted = true
+      } else {
+        newTodos[todoIndex].isCompleted = false
+      }
+      saveTodos(newTodos)
+      if(isLogged) {
+        await updateTask(id, newTodos[todoIndex].isCompleted, token)
+      }
   }
   
-  const addTodo = (text) => {
+  const addTodo = async (description) => {
     const newTodos = [...todos]
     newTodos.push({
-      completed: false,
-      text: text,
+      isCompleted: false,
+      description,
+      _id: Date.now(),
     })
     saveTodos(newTodos)
+    if(isLogged) {
+      await createTask(user._id, description, token)
+    }
   }
   
-  const deleteTodo = (text) => {
-    const todoIndex = todos.findIndex(todo => todo.text === text)
+  const deleteTodo = (id) => {
+    const todoIndex = todos.findIndex(todo => todo._id === id)
     const newTodos = [...todos]
     newTodos.splice(todoIndex, 1)
     saveTodos(newTodos)
+    if(isLogged) {
+      deleteTask(id, token)
+    }
   }
   
+
   const states = {
     loading,
     error,
@@ -63,6 +79,10 @@ function useTodos(props) {
     searchValue,
     searchedTodos,
     openModal,
+    modalContent,
+    user,
+    token,
+    isLogged,
   }
 
   const stateUpdaters = {
@@ -72,6 +92,10 @@ function useTodos(props) {
     deleteTodo,
     setOpenModal,
     sincronizeTodos,
+    setModalContent,
+    login,
+    logout,
+    signUp,
   }
 
   return { states, stateUpdaters }

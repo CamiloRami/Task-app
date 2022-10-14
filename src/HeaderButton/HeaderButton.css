@@ -1,0 +1,17 @@
+.HeaderButton {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 20px;
+  color: #202329;
+  font-weight: 400;
+  padding: 0.5rem;
+  border-radius: 2px;
+  border: none;
+  font-family: 'Montserrat';
+  background-color: #61DAFA;
+}
+
+.HeaderButton:hover {
+  transition: color 0.3s ease;
+  color: #FAFAFA;
+}

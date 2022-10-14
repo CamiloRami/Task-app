@@ -8,7 +8,9 @@
     "@testing-library/user-event": "^12.8.3",
     "caniuse-lite": "^1.0.30001332",
     "react": "^17.0.2",
+    "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
+    "react-query": "^3.39.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
   },

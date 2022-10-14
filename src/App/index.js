@@ -13,10 +13,13 @@ import { TodosLoading } from '../TodosLoading';
 import { EmptyTodos } from '../EmptyTodos';
 import { EmptySearchResults } from '../EmptySearchResults'
 import { ChangeAlert } from '../ChangeAlert'
+import { ButtonContainer } from '../ButtonContainer'
+import { HeaderButton } from '../HeaderButton'
+import { SignUp } from '../SignUp'
+import { LogIn } from '../LogIn'
 
 function App() {
   const { states, stateUpdaters } = useTodos()
-
   const {
     loading,
     error,
@@ -25,6 +28,10 @@ function App() {
     searchValue,
     searchedTodos,
     openModal,
+    modalContent,
+    user,
+    token,
+    isLogged,
   } = states
 
   const {
@@ -34,7 +41,16 @@ function App() {
     deleteTodo,
     setOpenModal,
     sincronizeTodos,
+    setModalContent,
+    login,
+    logout,
   } = stateUpdaters
+
+  React.useEffect(() => {
+    console.log(user)
+    console.log(token)
+    console.log(isLogged)
+  }, [user, token, isLogged])
 
   return (
     <React.Fragment>
@@ -44,6 +60,23 @@ function App() {
           completedTodos={completedTodos}
           loading={loading}
         />
+
+        <ButtonContainer>
+          <HeaderButton
+            setOpenModal={setOpenModal}
+            openModal={openModal}
+            setModalContent={setModalContent}
+          >
+            Sign Up
+          </HeaderButton>
+          <HeaderButton
+            setOpenModal={setOpenModal}
+            openModal={openModal}
+            setModalContent={setModalContent}
+          >
+            Log In
+          </HeaderButton>
+        </ButtonContainer>
 
         <TodoSearch 
           searchValue={searchValue}
@@ -61,38 +94,43 @@ function App() {
         onLoading={() => <TodosLoading />}
         onEmptyTodos={() => <EmptyTodos />}
         onEmptySearchResults={() => <EmptySearchResults searchText={searchValue}/>}
-
-        render={todo => (
-          <TodoItem
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}
-            onComplete={() => completeTodoSwitch(todo.text)}
-            onDelete={() => deleteTodo(todo.text)}
-          />
-        )}
       >
         {todo => (
           <TodoItem
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}
-            onComplete={() => completeTodoSwitch(todo.text)}
-            onDelete={() => deleteTodo(todo.text)}
+            key={todo._id}
+            description={todo.description}
+            isCompleted={todo.isCompleted}
+            onComplete={() => completeTodoSwitch(todo._id)}
+            onDelete={() => deleteTodo(todo._id)}
           />
         )}
       </TodoList>      
       
-      <ChangeAlert
+      {/* <ChangeAlert
         sincronize={sincronizeTodos}
-      />
+        logout={logout}
+        isLogged={isLogged}
+      /> */}
 
       {openModal && (
         <Modal>
-          <TodoForm 
-            addTodo={addTodo}
-            setOpenModal={setOpenModal}
-          />
+          {modalContent === 'TodoForm' && (
+            <TodoForm 
+              addTodo={addTodo}
+              setOpenModal={setOpenModal}
+            />
+          )}
+          {modalContent === 'Sign Up' && (
+            <SignUp
+              setOpenModal={setOpenModal}
+            />
+          )}
+          {modalContent === 'Log In' && (
+            <LogIn
+              setOpenModal={setOpenModal}
+              login={login}
+            />
+          )}
         </Modal>
         )
       }
@@ -100,6 +138,7 @@ function App() {
       <CreateTodoButton 
         setOpenModal={setOpenModal}
         openModal={openModal}
+        setModalContent={setModalContent}
       />
     </React.Fragment>
   )

@@ -1,6 +1,8 @@
 import React from "react"
+import { getUserTasks } from './services/taskApi'
 
-function useLocalStorage(itemName, initialValue) {
+function useLocalStorage(itemName, initialValue, {user, isLogged, token}) {
+  const tasksFromApi = React.useRef(null)
   const [state, dispatch] = React.useReducer(reducer, initialState({ initialValue }))
   const {
     sincronizedItem,
@@ -15,29 +17,35 @@ function useLocalStorage(itemName, initialValue) {
   const onSincronize = () => dispatch({ type: actionTypes.sincronize})
 
   React.useEffect(() => {
-    setTimeout(() => {
+    async function setTodos() {
+      console.log('here')
       try {
-        const localStorageItem = localStorage.getItem(itemName)
-        let parsedItem
-        
-        if (!localStorageItem) {
-          localStorage.setItem(itemName, JSON.stringify(initialValue))
-          parsedItem = initialValue
+        if (!isLogged) {  
+          const localStorageItem = localStorage.getItem(itemName)
+          if (!localStorageItem) {
+            localStorage.setItem(itemName, JSON.stringify(initialValue))
+            onSuccess(initialValue)
+          } else {
+            onSuccess(JSON.parse(localStorageItem))
+          }     
         } else {
-          parsedItem = JSON.parse(localStorageItem)
-        }    
-
-        onSuccess(parsedItem)
-      } catch(error) {
+            const tasks = await getUserTasks(user._id ,token)
+            tasksFromApi.current = tasks
+            onSuccess(tasks)
+          }
+        } catch(error) {
         onError(error)
       }
-    }, 3000)
-  }, [sincronizedItem, itemName, initialValue])
+    }
+    setTodos()
+  }, [sincronizedItem, isLogged, token, user])
   
   const saveItem = (newItem) => {
-    try {
-      const stringifiedItem = JSON.stringify(newItem)
-      localStorage.setItem(itemName, stringifiedItem)
+    try { 
+      if(!isLogged) {
+        const stringifiedItem = JSON.stringify(newItem)
+        localStorage.setItem(itemName, stringifiedItem)
+      }
       onSave(newItem)
     } catch(error) {
       onError(error)
@@ -60,7 +68,7 @@ function useLocalStorage(itemName, initialValue) {
 const initialState = ({ initialValue }) => ({
   sincronizedItem: true,
   error: false,
-  loading: true,
+  loading: false,
   item: initialValue,
 })
 

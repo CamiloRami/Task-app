@@ -3,6 +3,7 @@
   text-align: center;
   margin: 0;
   padding: 48px;
+  padding-top: 64px;
 }
 
 .TodoCounter--loading {

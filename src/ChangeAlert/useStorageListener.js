@@ -1,23 +1,28 @@
 import React from 'react'
 
-function useStorageListener( sincronize ) { 
-  const [storageChange, setStorageChange] = React.useState(false)
-
-  window.addEventListener('storage', (change) => {
-    if (change.key === 'TODOS_V1') {
-      console.log('Changes happened')
-      setStorageChange(true)
+function useStorageListener( sincronize, logout, isLogged ) { 
+  const [show, toggleShow] = React.useState(false)
+  React.useEffect(() => {
+    if (isLogged) {
+      toggleShow(true)
     }
-  })
-  
-  const toggleShow = () => {
+  }, [isLogged])
+  const sincUp = () => {
     sincronize()
-    setStorageChange(false)
+    toggleShow()
   }
 
+  const logOut = () => {
+    logout()
+    toggleShow()
+  }
+  
+
   return {
-    show: storageChange,
+    show,
     toggleShow,
+    sincUp,
+    logOut,
   }
 }
 

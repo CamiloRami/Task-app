@@ -2,20 +2,26 @@ import React from "react";
 import { useStorageListener } from "./useStorageListener";
 import './ChangeAlert.css'
 
-function ChangeAlert({ sincronize }) {
-  const { show, toggleShow } = useStorageListener(sincronize)
+function ChangeAlert({ sincronize, logout, isLogged }) {
+  const { show, logOut, sincUp } = useStorageListener(sincronize, logout, isLogged)
 
   if (show) {
     return (
       <div className="ChangeAletrt-bg">
         <div className="ChangeAletrt-container">
-          <p>Memory changes have been observed and the tabs are out of sync.</p>
-          <p>Do you want the tabs to be synced?</p>
+          <p>You have successfully logged in</p>
+          <p>Do you want to synchronize your tasks or stay without logging in?</p>
           <button
             className="ChangeAletrt-container__button"
-            onClick={ () => toggleShow(false) }
+            onClick={sincUp}
           >
             Sync up
+          </button>
+          <button
+            className="ChangeAletrt-container__button"
+            onClick={logOut}
+          >
+            Logout
           </button>
         </div> 
       </div>

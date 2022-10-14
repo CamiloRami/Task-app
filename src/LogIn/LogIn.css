@@ -1,0 +1,46 @@
+.LogIn-form {
+  width: 90%;
+  max-width: 300px;
+  background-color: #F2F4F5;
+  padding: 33px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-column-gap: 0.5rem;
+}
+
+.LogIn-form-input {
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  font-family: 'Montserrat';
+  background-color: #FAFAFA;
+  grid-column: 1 / 3;
+}
+
+.LogIn-form-input:focus {
+  outline: none;
+}
+
+.LogIn-form-button {
+  width: 100%;
+  max-width: 400px;
+  height: 50px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  font-size: 1.2rem;
+  font-family: 'Montserrat';
+  background-color: #61DAFA;
+  color: #202329;
+  cursor: pointer;
+}
+
+.LogIn-form-button:hover {
+  transition: color 0.3s ease;
+  color: #FAFAFA;
+}
