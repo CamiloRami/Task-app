@@ -2,7 +2,6 @@ import React from "react"
 import { getUserTasks } from './services/taskApi'
 
 function useLocalStorage(itemName, initialValue, {user, isLogged, token}) {
-  const tasksFromApi = React.useRef(null)
   const [state, dispatch] = React.useReducer(reducer, initialState({ initialValue }))
   const {
     sincronizedItem,
@@ -18,7 +17,6 @@ function useLocalStorage(itemName, initialValue, {user, isLogged, token}) {
 
   React.useEffect(() => {
     async function setTodos() {
-      console.log('here')
       try {
         if (!isLogged) {  
           const localStorageItem = localStorage.getItem(itemName)
@@ -30,7 +28,6 @@ function useLocalStorage(itemName, initialValue, {user, isLogged, token}) {
           }     
         } else {
             const tasks = await getUserTasks(user._id ,token)
-            tasksFromApi.current = tasks
             onSuccess(tasks)
           }
         } catch(error) {

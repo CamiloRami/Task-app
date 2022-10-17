@@ -1,19 +1,32 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import './SignUp.css'
 
-function SignUp({ setOpenModal }) {
-  const form = useRef(null)
+function SignUp({ setOpenModal, signUp, setAlert }) {
+  const form = React.useRef(null)
 
-  const onSubmit = (event) => {
-    event.preventDefault()
-    const formData = new FormData(event.target)
-    const newUser = {
-      name: formData.get('username'),
-      email: formData.get('email'),
-      password: formData.get('password')
-    } 
-    console.log(newUser)
-    setOpenModal(false)
+  const onSubmit = async (event) => {
+    try {
+      setAlert(null)
+      event.preventDefault()
+      const formData = new FormData(event.target)
+      const newUser = {
+        name: formData.get('username'),
+        email: formData.get('email'),
+        password: formData.get('password')
+      } 
+      const res = await signUp(newUser.name, newUser.email, newUser.password)
+      if(res.ok){
+        setAlert({ message: 'User created successfully', type: 'success' })
+        setOpenModal(false)
+      } else {
+        throw new Error('Error creating user')
+      }
+    } catch (error) {
+      setAlert({
+        message: error.message,
+        type: 'Error'
+      })
+    }
   }
 
   const onCancel = () => {

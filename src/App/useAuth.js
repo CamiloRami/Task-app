@@ -1,30 +1,29 @@
 import React from 'react'
-import { useCookies } from 'react-cookie'
-import { login } from './services/taskApi'
+import { login, signUp } from './services/taskApi'
 
 function useAuth() {
   const [user, setUser] = React.useState(null)
   const [ isLogged, setIsLogged ] = React.useState(false)
-  const [cookies, setCookie, removeCookie] = useCookies(['token'])
 
   const loginApp = async (email, password) => {
-    const { user, token } = await login(email, password)
+    const res = await login(email, password)
+    const user = await res.json()
     setUser(user)
     setIsLogged(true)
-    setCookie('token', token, { path: '/' })
+    return res
   }
 
   const logout = () => {
     setUser(null)
     setIsLogged(false)
-    removeCookie('token', { path: '/' })
   }
 
-  const signUp = async (email, password) => {
-    // TODO
+  const signUpApp = async (name, email, password) => {
+    const res = await signUp(name, email, password)
+    return res
   }
 
-  return { user, isLogged, login: loginApp, logout, signUp, token: cookies.token }
+  return { user: user?.user, isLogged, login: loginApp, logout, signUp: signUpApp, token: user?.token }
 }
 
 export { useAuth }

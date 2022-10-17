@@ -2,23 +2,42 @@ const API = process.env.REACT_APP_TASKS_API
 const API_KEY = process.env.REACT_APP_TASKS_API_KEY
 
 async function login(email, password){
-  const res = await fetch(`${API}auth/login`, {
+  const config = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api': API_KEY,
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    }
+  return new Promise((resolve, reject) => {
+    fetch(`${API}auth/login`, config)
+      .then(resolve)
+      .catch(reject)
+  })
+}
+
+async function signUp(name, email, password){
+  const config = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'api': API_KEY,
     },
     body: JSON.stringify({
+      name,
       email,
       password
     })
+  }
+  return new Promise((resolve, reject) => {
+    fetch(`${API}auth/signup`, config)
+      .then(resolve)
+      .catch(reject)
   })
-  const response = await res.json()
-  return response
-}
-
-async function signUp(email, password){
-  // TODO
 }
 
 async function getUserTasks(userId, token){

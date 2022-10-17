@@ -12,7 +12,7 @@ import { TodosError } from '../TodosError';
 import { TodosLoading } from '../TodosLoading';
 import { EmptyTodos } from '../EmptyTodos';
 import { EmptySearchResults } from '../EmptySearchResults'
-import { ChangeAlert } from '../ChangeAlert'
+import { Alert } from '../Alert'
 import { ButtonContainer } from '../ButtonContainer'
 import { HeaderButton } from '../HeaderButton'
 import { SignUp } from '../SignUp'
@@ -29,8 +29,7 @@ function App() {
     searchedTodos,
     openModal,
     modalContent,
-    user,
-    token,
+    alert,
     isLogged,
   } = states
 
@@ -42,15 +41,11 @@ function App() {
     setOpenModal,
     sincronizeTodos,
     setModalContent,
+    setAlert,
     login,
     logout,
+    signUp,
   } = stateUpdaters
-
-  React.useEffect(() => {
-    console.log(user)
-    console.log(token)
-    console.log(isLogged)
-  }, [user, token, isLogged])
 
   return (
     <React.Fragment>
@@ -62,22 +57,26 @@ function App() {
         />
 
         <ButtonContainer>
-          <HeaderButton
-            setOpenModal={setOpenModal}
-            openModal={openModal}
-            setModalContent={setModalContent}
-          >
-            Sign Up
-          </HeaderButton>
-          <HeaderButton
-            setOpenModal={setOpenModal}
-            openModal={openModal}
-            setModalContent={setModalContent}
-          >
-            Log In
-          </HeaderButton>
+          {isLogged ? (
+            <HeaderButton onClick={logout}>Log Out</HeaderButton>
+          ) : <>
+              <HeaderButton
+                setOpenModal={setOpenModal}
+                openModal={openModal}
+                setModalContent={setModalContent}
+              >
+                Sign Up
+              </HeaderButton>
+              <HeaderButton
+                setOpenModal={setOpenModal}
+                openModal={openModal}
+                setModalContent={setModalContent}
+              >
+                Log In
+              </HeaderButton>
+            </>
+          }
         </ButtonContainer>
-
         <TodoSearch 
           searchValue={searchValue}
           setSearchValue={setSearchValue}
@@ -106,11 +105,11 @@ function App() {
         )}
       </TodoList>      
       
-      {/* <ChangeAlert
-        sincronize={sincronizeTodos}
-        logout={logout}
-        isLogged={isLogged}
-      /> */}
+      {alert && <Alert 
+        message={alert.message} 
+        setAlert={setAlert} 
+        type={alert.type}/>
+      }
 
       {openModal && (
         <Modal>
@@ -123,12 +122,15 @@ function App() {
           {modalContent === 'Sign Up' && (
             <SignUp
               setOpenModal={setOpenModal}
+              signUp={signUp}
+              setAlert={setAlert}
             />
           )}
           {modalContent === 'Log In' && (
             <LogIn
               setOpenModal={setOpenModal}
               login={login}
+              setAlert={setAlert}
             />
           )}
         </Modal>

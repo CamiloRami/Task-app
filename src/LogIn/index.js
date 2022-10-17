@@ -1,18 +1,29 @@
 import React from 'react'
 import './LogIn.css'
 
-function LogIn({ setOpenModal, login }) {
+function LogIn({ setOpenModal, login, setAlert }) {
   const form = React.useRef(null)
 
-  const onSubmit = (event) => {
-    event.preventDefault()
-    const formData = new FormData(form.current)
-    const user = {
-      email: formData.get('email'),
-      password: formData.get('password')
+  const onSubmit = async (event) => {
+    try {
+      setAlert(null)
+      event.preventDefault()
+      const formData = new FormData(form.current)
+      const user = {
+        email: formData.get('email'),
+        password: formData.get('password')
+      }
+      const res = await login(user.email, user.password)
+      if(res.ok) {
+        setAlert({ message: 'User logged in successfully', type: 'success' })
+        setOpenModal(false)
+      }
+    } catch (error) {
+      setAlert({
+        message: 'User or password incorrect',
+        type: 'Error'
+      })
     }
-    login(user.email, user.password)
-    setOpenModal(false)
   }
 
   const onCancel = () => {

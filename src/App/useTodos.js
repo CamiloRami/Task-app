@@ -16,6 +16,7 @@ function useTodos() {
   const [searchValue, setSearchValue] = React.useState('')
   const [openModal, setOpenModal] = React.useState(false)
   const [modalContent, setModalContent] = React.useState(false)
+  const [alert, setAlert] = React.useState(null)
   
   const completedTodos = todos.filter(todo => !!todo.isCompleted).length 
   const totalTodos = todos.length
@@ -48,16 +49,18 @@ function useTodos() {
   }
   
   const addTodo = async (description) => {
+    let _id = Date.now()
+    if(isLogged) {
+      const res = await createTask(user._id, description, token)
+      _id = res._id
+    }
     const newTodos = [...todos]
     newTodos.push({
       isCompleted: false,
       description,
-      _id: Date.now(),
+      _id,
     })
     saveTodos(newTodos)
-    if(isLogged) {
-      await createTask(user._id, description, token)
-    }
   }
   
   const deleteTodo = (id) => {
@@ -80,6 +83,7 @@ function useTodos() {
     searchedTodos,
     openModal,
     modalContent,
+    alert,
     user,
     token,
     isLogged,
@@ -93,6 +97,7 @@ function useTodos() {
     setOpenModal,
     sincronizeTodos,
     setModalContent,
+    setAlert,
     login,
     logout,
     signUp,
