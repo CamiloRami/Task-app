@@ -2,7 +2,7 @@
 ___
 It is a simple task manager app built with create-react-app. 
 It uses local storage to store the tasks, but it also uses a backend to store the user data.
-Yoy can see the app in action [here](https://task-app-rho.vercel.app/).
+You can see the app in action [here](https://task-app-rho.vercel.app/).
 ___
 ## How to run the app
 1. Clone the repo
